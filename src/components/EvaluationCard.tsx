@@ -7,16 +7,16 @@ interface EvaluationCardProps {
 }
 
 function ScoreBadge({ score }: { score: number }) {
-  const color =
+  const config =
     score >= 8
-      ? "bg-green-900/50 text-green-300 border-green-800"
+      ? { gradient: "from-emerald-500 to-emerald-400", shadow: "shadow-emerald-500/20" }
       : score >= 5
-        ? "bg-yellow-900/50 text-yellow-300 border-yellow-800"
-        : "bg-red-900/50 text-red-300 border-red-800";
+        ? { gradient: "from-amber-500 to-yellow-400", shadow: "shadow-amber-500/20" }
+        : { gradient: "from-red-500 to-red-400", shadow: "shadow-red-500/20" };
 
   return (
     <span
-      className={`inline-flex items-center justify-center w-8 h-8 rounded text-sm font-bold border ${color}`}
+      className={`inline-flex items-center justify-center w-9 h-9 rounded-lg text-sm font-bold text-white bg-gradient-to-br ${config.gradient} shadow-lg ${config.shadow}`}
     >
       {score}
     </span>
@@ -25,13 +25,13 @@ function ScoreBadge({ score }: { score: number }) {
 
 export default function EvaluationCard({ evaluation }: EvaluationCardProps) {
   return (
-    <div className="border border-zinc-800 rounded-lg p-3 bg-zinc-950 flex items-start gap-3">
+    <div className="glass rounded-xl p-4 flex items-start gap-4 hover:bg-white/[0.04] transition-smooth">
       <ScoreBadge score={evaluation.score} />
       <div className="flex-1 min-w-0">
-        <p className="text-xs font-medium text-zinc-300">
+        <p className="text-xs font-semibold text-zinc-200">
           {evaluation.criterion}
         </p>
-        <p className="text-xs text-zinc-500 mt-0.5 leading-relaxed">
+        <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
           {evaluation.reasoning}
         </p>
       </div>

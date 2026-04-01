@@ -6,50 +6,47 @@ interface OpportunityCardProps {
   opportunity: Opportunity;
 }
 
-const categoryColors: Record<string, string> = {
-  market: "bg-blue-900/50 text-blue-300 border-blue-800",
-  technology: "bg-purple-900/50 text-purple-300 border-purple-800",
-  partnership: "bg-green-900/50 text-green-300 border-green-800",
-  product: "bg-orange-900/50 text-orange-300 border-orange-800",
-  investment: "bg-yellow-900/50 text-yellow-300 border-yellow-800",
-  other: "bg-zinc-800/50 text-zinc-300 border-zinc-700",
+const categoryConfig: Record<string, { bg: string; text: string }> = {
+  market: { bg: "bg-blue-500/10", text: "text-blue-400" },
+  technology: { bg: "bg-violet-500/10", text: "text-violet-400" },
+  partnership: { bg: "bg-emerald-500/10", text: "text-emerald-400" },
+  product: { bg: "bg-orange-500/10", text: "text-orange-400" },
+  investment: { bg: "bg-amber-500/10", text: "text-amber-400" },
+  other: { bg: "bg-zinc-500/10", text: "text-zinc-400" },
 };
 
 function ConfidenceBar({ value }: { value: number }) {
   const pct = Math.round(value * 100);
-  const color =
+  const gradient =
     value >= 0.7
-      ? "bg-green-500"
+      ? "from-emerald-500 to-emerald-400"
       : value >= 0.4
-        ? "bg-yellow-500"
-        : "bg-red-500";
+        ? "from-amber-500 to-yellow-400"
+        : "from-red-500 to-red-400";
 
   return (
-    <div className="flex items-center gap-2">
-      <div className="flex-1 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+    <div className="flex items-center gap-3">
+      <div className="flex-1 h-1.5 bg-zinc-800/50 rounded-full overflow-hidden">
         <div
-          className={`h-full rounded-full ${color}`}
+          className={`h-full rounded-full bg-gradient-to-r ${gradient} transition-all duration-500`}
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="text-xs text-zinc-400 w-8 text-right">{pct}%</span>
+      <span className="text-xs text-zinc-400 w-8 text-right tabular-nums font-medium">{pct}%</span>
     </div>
   );
 }
 
 export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
-  const catStyle =
-    categoryColors[opportunity.category] || categoryColors.other;
+  const cat = categoryConfig[opportunity.category] || categoryConfig.other;
 
   return (
-    <div className="border border-zinc-800 rounded-lg p-4 bg-zinc-950 space-y-3">
-      <div className="flex items-start justify-between gap-2">
-        <h3 className="text-sm font-semibold text-zinc-100">
+    <div className="glass gradient-border rounded-xl p-5 space-y-4 hover:bg-white/[0.04] transition-smooth">
+      <div className="flex items-start justify-between gap-3">
+        <h3 className="text-sm font-semibold text-zinc-100 leading-snug">
           {opportunity.title}
         </h3>
-        <span
-          className={`text-xs px-2 py-0.5 rounded border shrink-0 ${catStyle}`}
-        >
+        <span className={`text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full shrink-0 ${cat.bg} ${cat.text}`}>
           {opportunity.category}
         </span>
       </div>
@@ -59,14 +56,14 @@ export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
       </p>
 
       <div>
-        <p className="text-xs text-zinc-500 mb-1">Confidence</p>
+        <p className="text-[10px] uppercase tracking-wider text-zinc-600 mb-1.5 font-medium">Confidence</p>
         <ConfidenceBar value={opportunity.confidence} />
       </div>
 
       {opportunity.sources.length > 0 && (
         <div>
-          <p className="text-xs text-zinc-500 mb-1">Sources</p>
-          <ul className="space-y-0.5">
+          <p className="text-[10px] uppercase tracking-wider text-zinc-600 mb-1.5 font-medium">Sources</p>
+          <ul className="space-y-1">
             {opportunity.sources.map((src, i) => (
               <li key={i} className="text-xs text-zinc-400 truncate">
                 {src.startsWith("http") ? (
@@ -74,7 +71,7 @@ export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
                     href={src}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-400 hover:underline"
+                    className="text-indigo-400 hover:text-indigo-300 hover:underline transition-colors"
                   >
                     {src}
                   </a>
@@ -89,11 +86,12 @@ export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
 
       {opportunity.risks.length > 0 && (
         <div>
-          <p className="text-xs text-zinc-500 mb-1">Risks</p>
-          <ul className="space-y-0.5">
+          <p className="text-[10px] uppercase tracking-wider text-zinc-600 mb-1.5 font-medium">Risks</p>
+          <ul className="space-y-1">
             {opportunity.risks.map((risk, i) => (
-              <li key={i} className="text-xs text-red-400/80">
-                • {risk}
+              <li key={i} className="text-xs text-red-400/80 flex items-start gap-2">
+                <span className="w-1 h-1 rounded-full bg-red-400/60 mt-1.5 shrink-0" />
+                {risk}
               </li>
             ))}
           </ul>
@@ -102,11 +100,14 @@ export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
 
       {opportunity.nextSteps.length > 0 && (
         <div>
-          <p className="text-xs text-zinc-500 mb-1">Next Steps</p>
-          <ul className="space-y-0.5">
+          <p className="text-[10px] uppercase tracking-wider text-zinc-600 mb-1.5 font-medium">Next Steps</p>
+          <ul className="space-y-1">
             {opportunity.nextSteps.map((step, i) => (
-              <li key={i} className="text-xs text-zinc-300">
-                {i + 1}. {step}
+              <li key={i} className="text-xs text-zinc-300 flex items-start gap-2">
+                <span className="w-4 h-4 rounded-full bg-indigo-500/10 text-indigo-400 flex items-center justify-center shrink-0 text-[10px] font-bold mt-0.5">
+                  {i + 1}
+                </span>
+                {step}
               </li>
             ))}
           </ul>

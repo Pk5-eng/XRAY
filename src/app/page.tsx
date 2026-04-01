@@ -377,20 +377,25 @@ export default function XrayPage() {
   // RENDER
   // ============================================================
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-100">
+    <main className="min-h-screen text-zinc-100">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
-        <header className="mb-8">
-          <h1 className="text-2xl font-bold tracking-tight">
-            Xray
-          </h1>
-          <p className="text-sm text-zinc-500 mt-1">
+        <header className="mb-10">
+          <div className="flex items-center gap-3 mb-1">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-indigo-500/25">
+              X
+            </div>
+            <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
+              Xray
+            </h1>
+          </div>
+          <p className="text-sm text-zinc-500 ml-11">
             AI Opportunity Intelligence Agent
           </p>
         </header>
 
         {/* Query input */}
-        <div className="mb-6">
+        <div className="mb-8">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -398,34 +403,48 @@ export default function XrayPage() {
             }}
             className="flex gap-3"
           >
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Describe an opportunity area to research..."
-              disabled={running}
-              className="flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-sm text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 disabled:opacity-50"
-            />
+            <div className="flex-1 relative group">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-xl blur opacity-0 group-focus-within:opacity-100 transition-opacity" />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Describe an opportunity area to research..."
+                disabled={running}
+                className="relative w-full glass rounded-xl px-4 py-3.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/30 disabled:opacity-50 transition-smooth"
+              />
+            </div>
             <button
               type="submit"
               disabled={running || !query.trim()}
-              className="px-6 py-3 bg-zinc-100 text-zinc-900 text-sm font-semibold rounded-lg hover:bg-white disabled:bg-zinc-800 disabled:text-zinc-600 transition-colors"
+              className="relative px-6 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-semibold rounded-xl hover:from-indigo-500 hover:to-purple-500 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-600 transition-smooth shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 disabled:shadow-none"
             >
-              {running ? "Running..." : "Run Agent"}
+              {running ? (
+                <span className="flex items-center gap-2">
+                  <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  Running
+                </span>
+              ) : "Run Agent"}
             </button>
           </form>
         </div>
 
         {/* Error display */}
         {error && (
-          <div className="mb-6 p-3 border border-red-800 bg-red-950/30 rounded-lg text-sm text-red-400">
+          <div className="mb-6 p-4 glass border-red-500/30 rounded-xl text-sm text-red-400 flex items-start gap-3">
+            <div className="w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center shrink-0 mt-0.5">
+              <span className="text-red-400 text-xs font-bold">!</span>
+            </div>
             {error}
           </div>
         )}
 
         {/* HITL Checkpoint */}
         {checkpoint && (
-          <div className="mb-6">
+          <div className="mb-8">
             <HumanCheckpointComponent
               checkpoint={checkpoint}
               onAnswer={handleHumanAnswer}
@@ -441,8 +460,10 @@ export default function XrayPage() {
 
             {evaluations.length > 0 && (
               <div className="space-y-3">
-                <h3 className="text-sm font-medium text-zinc-400">
-                  Evaluations ({evaluations.length})
+                <h3 className="text-sm font-medium text-zinc-400 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-400" />
+                  Evaluations
+                  <span className="text-zinc-600">({evaluations.length})</span>
                 </h3>
                 {evaluations.map((ev) => (
                   <EvaluationCard key={ev.id} evaluation={ev} />
@@ -452,8 +473,10 @@ export default function XrayPage() {
 
             {opportunities.length > 0 && (
               <div className="space-y-3">
-                <h3 className="text-sm font-medium text-zinc-400">
-                  Opportunities ({opportunities.length})
+                <h3 className="text-sm font-medium text-zinc-400 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  Opportunities
+                  <span className="text-zinc-600">({opportunities.length})</span>
                 </h3>
                 {opportunities.map((opp) => (
                   <OpportunityCard key={opp.id} opportunity={opp} />
