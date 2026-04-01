@@ -380,16 +380,33 @@ export default function XrayPage() {
     <main className="min-h-screen text-zinc-100">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
-        <header className="mb-10">
-          <div className="flex items-center gap-3 mb-1">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-indigo-500/25">
-              X
+        <header className="mb-10 flex flex-col items-center text-center">
+          <div className="flex items-center gap-4 mb-2">
+            {/* Artistic logo — layered glowing X with orbital ring */}
+            <div className="relative w-12 h-12">
+              {/* Outer glow */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 blur-lg opacity-50" />
+              {/* Main shape */}
+              <div className="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-xl shadow-indigo-500/30 overflow-hidden">
+                {/* Inner shimmer */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-white/20 via-transparent to-transparent" />
+                {/* Orbital ring */}
+                <div className="absolute inset-1 rounded-xl border border-white/20" />
+                {/* Letter */}
+                <span className="relative text-white font-black text-xl tracking-tighter" style={{ fontFamily: "'SF Pro Display', system-ui, sans-serif" }}>
+                  X
+                </span>
+              </div>
+              {/* Accent dot */}
+              <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 shadow-lg shadow-cyan-400/40 border border-cyan-300/30" />
             </div>
-            <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
-              Xray
-            </h1>
+            <div>
+              <h1 className="text-3xl font-black tracking-tight bg-gradient-to-r from-white via-indigo-200 to-purple-300 bg-clip-text text-transparent">
+                Xray
+              </h1>
+            </div>
           </div>
-          <p className="text-sm text-zinc-500 ml-11">
+          <p className="text-sm text-zinc-500 tracking-wide">
             AI Opportunity Intelligence Agent
           </p>
         </header>
